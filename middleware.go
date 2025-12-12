@@ -38,7 +38,7 @@ func RequestLoggerMiddleware(serviceName string) gin.HandlerFunc {
 		latency := time.Since(start)
 		status := c.Writer.Status()
 
-		attrs := []slog.Attr{
+		attrs := []any{
 			slog.Int("status", status),
 			slog.Duration("latency", latency),
 			slog.String("user_agent", c.Request.UserAgent()),
