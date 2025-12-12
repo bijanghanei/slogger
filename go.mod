@@ -1,6 +1,6 @@
 module github.com/bijanghanei/slogger
 
-go 1.23.4
+go 1.23.0
 
 require (
 	github.com/gin-gonic/gin v1.11.0
