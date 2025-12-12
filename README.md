@@ -61,35 +61,6 @@ func main() {
     r.Use(logger.RequestLoggerMiddleware("identity-service"))
     r.Use(logger.Recovery())
 
-    // Example route
-    r.GET("/health", func(c *gin.Context) {
-        log := logger.FromCtx(c.Request.Context(), "identity-service")
-        log.Info("health check requested")
-        c.JSON(200, gin.H{"status": "ok"})
-    })
-
-    // Graceful shutdown
-    srv := &http.Server{
-        Addr:    ":8080",
-        Handler: r,
-    }
-
-    go func() {
-        if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-            logger.L().Error("server error", slog.String("err", err.Error()))
-        }
-    }()
-
-    quit := make(chan os.Signal, 1)
-    signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-    <-quit
-
-    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-    defer cancel()
-
-    logger.L().Info("shutting down server")
-    if err := srv.Shutdown(ctx); err != nil {
-        logger.L().Error("server forced shutdown", slog.String("err", err.Error()))
-    }
+    // Server code ...
 }
 ```
