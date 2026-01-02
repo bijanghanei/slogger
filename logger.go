@@ -8,11 +8,11 @@ import (
 	"github.com/google/uuid"
 )
 
-// ctxKey is a private type to avoid collisions in context values
-type ctxKey string
+// ContextKey is a typed key for context values to prevent collisionstype CtxKey string
+type CtxKey string
 
 const (
-	reqIDKey ctxKey = "req_id"
+	ReqIDKey CtxKey = "req_id"
 )
 
 // Default returns the global structured logger with service-specific fields.
@@ -34,7 +34,7 @@ func FromCtx(ctx context.Context, serviceName string) *slog.Logger {
 
 // WithReqID creates a child logger with request ID (for non-HTTP use)
 func WithReqID(parent *slog.Logger, reqID string) *slog.Logger {
-	return parent.With(slog.String(string(reqIDKey), reqID))
+	return parent.With(slog.String(string(ReqIDKey), reqID))
 }
 
 // NewReqID generates a new request ID (UUID v4)

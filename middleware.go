@@ -1,6 +1,7 @@
 package slogger
 
 import (
+	"context"
 	"log/slog"
 	"time"
 
@@ -19,6 +20,8 @@ func RequestLoggerMiddleware(serviceName string) gin.HandlerFunc {
 			reqID = NewReqID()
 		}
 
+		c.Header("X-Request-ID", reqID)
+
 		// Base fields
 		baseLogger := slog.Default().With(
 			slog.String("req_id", reqID),
@@ -28,10 +31,13 @@ func RequestLoggerMiddleware(serviceName string) gin.HandlerFunc {
 		)
 
 		// Store for handlers
-		c.Set(string(reqIDKey), reqID)
+		c.Set(string(ReqIDKey), reqID)
 		c.Set("logger", baseLogger)
 		c.Set("start_time", start)
 
+		// Propagate req_id to request.Context() — huge win for GORM / clients
+		ctx := context.WithValue(c.Request.Context(), ReqIDKey, reqID)
+		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 
 		// Completion log
