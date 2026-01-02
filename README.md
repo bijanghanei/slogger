@@ -26,7 +26,7 @@ Built exclusively on the standard library's `log/slog` (Go 1.21+), with **zero e
 ## Installation
 
 ```bash
-go get github.com/yourorg/go-logger@latest
+go get github.com/bijanghanei/slogger@latest
 ```
 
 ## Example Usage (Gin)
